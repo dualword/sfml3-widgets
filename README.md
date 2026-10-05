@@ -1,3 +1,9 @@
+# sfml3-widgets
+
+Source code: https://github.com/dualword/sfml3-widgets  
+
+<hr/>
+
 SFML Widgets
 ============
 
