@@ -1,9 +1,15 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #ifndef GUI_PROGRESS_BAR_HPP
 #define GUI_PROGRESS_BAR_HPP
 
 #include "Widget.hpp"
 #include "Utils/Box.hpp"
 #include "Enums/Enums.hpp"
+#include "Theme.hpp"
 
 namespace gui
 {
@@ -38,8 +44,8 @@ private:
 
     Box m_box;
     Orientation m_orientation;
-    sf::Vertex m_bar[4];
-    sf::Text m_label;
+    sf::Vertex m_bar[6];
+    sf::Text m_label{gui::Theme::getFont()};
     LabelPlacement m_labelPlacement;
     float m_value;
 };

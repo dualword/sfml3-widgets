@@ -1,3 +1,8 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #ifndef GUI_IMAGE_HPP
 #define GUI_IMAGE_HPP
 
@@ -23,7 +28,7 @@ public:
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    sf::Vertex m_vertices[4];
+    sf::Vertex m_vertices[6];
     const sf::Texture* m_texture;
 };
 

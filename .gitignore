@@ -1,5 +1,6 @@
 # Demo binary
 sfml-widgets-demo
+sfml3-widgets-demo
 
 # Lib
 *.a
@@ -10,3 +11,7 @@ sfml-widgets-demo
 # Code::Blocks
 sfml-widgets.layout
 sfml-widgets.depend
+
+#
+CMakeLists.txt.user
+

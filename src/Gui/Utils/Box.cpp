@@ -1,6 +1,10 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #include "Box.hpp"
 #include "../Theme.hpp"
-
 
 namespace gui
 {
@@ -19,7 +23,6 @@ const sf::Vector2f& Box::getPosition() const
     return m_vertices[TOP_LEFT].position;
 }
 
-
 void Box::setPosition(float x, float y)
 {
     sf::Vector2f diff = sf::Vector2f(x, y) - getPosition();
@@ -27,26 +30,32 @@ void Box::setPosition(float x, float y)
         m_vertices[i].position += diff;
 }
 
-
 void Box::setSliceTextureCoords(Slice slice, float x, float y)
 {
-    int index = slice * 4;
-    m_vertices[index].texCoords = sf::Vector2f(x, y);
-    m_vertices[++index].texCoords = sf::Vector2f(x + Theme::borderSize, y);
-    m_vertices[++index].texCoords = sf::Vector2f(x + Theme::borderSize, y + Theme::borderSize);
-    m_vertices[++index].texCoords = sf::Vector2f(x, y + Theme::borderSize);
-}
+    int index = slice * 6;
 
+    float x2 = x + Theme::borderSize;
+    float y2 = y + Theme::borderSize;
+
+    m_vertices[index + 0].texCoords = sf::Vector2f(x, y);
+    m_vertices[index + 1].texCoords = sf::Vector2f(x2, y);
+    m_vertices[index + 2].texCoords = sf::Vector2f(x2, y2);
+    m_vertices[index + 3].texCoords = sf::Vector2f(x2, y2);
+    m_vertices[index + 4].texCoords = sf::Vector2f(x, y2);
+    m_vertices[index + 5].texCoords = sf::Vector2f(x, y);
+}
 
 void Box::setSliceGeometry(Slice slice, float x1, float y1, float x2, float y2)
 {
-    int index = slice * 4;
-    m_vertices[index].position = sf::Vector2f(x1, y1);
-    m_vertices[++index].position = sf::Vector2f(x2, y1);
-    m_vertices[++index].position = sf::Vector2f(x2, y2);
-    m_vertices[++index].position = sf::Vector2f(x1, y2);
-}
+    int index = slice * 6;
 
+    m_vertices[index + 0].position = sf::Vector2f(x1, y1);
+    m_vertices[index + 1].position = sf::Vector2f(x2, y1);
+    m_vertices[index + 2].position = sf::Vector2f(x2, y2);
+    m_vertices[index + 3].position = sf::Vector2f(x2, y2);
+    m_vertices[index + 4].position = sf::Vector2f(x1, y2);
+    m_vertices[index + 5].position = sf::Vector2f(x1, y1);
+}
 
 void Box::setSize(float width, float height)
 {
@@ -85,23 +94,20 @@ sf::Vector2f Box::getSize() const
     return m_vertices[BOTTOM_RIGHT * 4 + 2].position - getPosition();
 }
 
-
 void Box::press()
 {
     applyState(StatePressed);
 }
-
 
 void Box::release()
 {
     applyState(StateDefault);
 }
 
-
 bool Box::containsPoint(float x, float y) const
 {
-    return x > m_vertices[0].position.x && x < m_vertices[BOTTOM_RIGHT * 4 + 2].position.x
-        && y > m_vertices[0].position.y && y < m_vertices[BOTTOM_RIGHT * 4 + 2].position.y;
+    return x > m_vertices[0].position.x && x < m_vertices[BOTTOM_RIGHT * 6 + 2].position.x
+        && y > m_vertices[0].position.y && y < m_vertices[BOTTOM_RIGHT * 6 + 2].position.y;
 }
 
 // Visual properties -----------------------------------------------------------
@@ -112,8 +118,8 @@ void Box::applyState(State state)
         return;
 
     const sf::IntRect& subrect = Theme::getTextureRect(m_type, state);
-    float x = subrect.left;
-    float y = subrect.top;
+    float x = subrect.position.x;
+    float y = subrect.position.y;
     float width = Theme::borderSize;
     float height = Theme::borderSize;
 
@@ -142,25 +148,23 @@ void Box::applyState(State state)
 void Box::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.texture = &Theme::getTexture();
-    target.draw(m_vertices, VERTEX_COUNT, sf::Quads, states);
+    target.draw(m_vertices, VERTEX_COUNT, sf::PrimitiveType::Triangles, states);
 }
-
 
 void Box::centerTextHorizontally(sf::Text& text)
 {
     sf::Vector2f size = getSize();
     sf::FloatRect textSize = text.getLocalBounds();
-    int x = getPosition().x + (size.x - textSize.width) / 2;
-    text.setPosition(x, Theme::borderSize + Theme::PADDING);
+    float x = getPosition().x + (size.x - textSize.size.x) / 2;
+    text.setPosition({x, Theme::borderSize + Theme::PADDING});
 }
-
 
 void Box::centerTextVertically(sf::Text& text)
 {
     sf::Vector2f size = getSize();
     sf::FloatRect textSize = text.getLocalBounds();
-    int y = getPosition().y + (size.y - textSize.width) / 2;
-    text.setPosition(Theme::getBoxHeight() - Theme::PADDING, y);
+    float y = getPosition().y + (size.y - textSize.size.x) / 2;
+    text.setPosition({Theme::getBoxHeight() - Theme::PADDING, y});
 }
 
 }

@@ -1,3 +1,8 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #ifndef GUI_GUI_HPP
 #define GUI_GUI_HPP
 
@@ -18,6 +23,8 @@
 #include "Slider.hpp"
 #include "SpriteButton.hpp"
 #include "TextBox.hpp"
+#include "ToggleSwitch.hpp"
+#include "LabeledToggle.hpp"
 
 // Layouts
 #include "Layouts/FormLayout.hpp"

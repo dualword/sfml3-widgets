@@ -1,3 +1,8 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #ifndef GUI_OPTIONSBOX_HPP
 #define GUI_OPTIONSBOX_HPP
 
@@ -58,8 +63,8 @@ protected:
     void onMouseMoved(float x, float y) override;
     void onMousePressed(float x, float y) override;
     void onMouseReleased(float x, float y) override;
-    void onKeyPressed(const sf::Event::KeyEvent& key) override;
-    void onKeyReleased(const sf::Event::KeyEvent& key) override;
+    void onKeyPressed(const sf::Event::KeyPressed& key) override;
+    void onKeyReleased(const sf::Event::KeyPressed& key) override;
 
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

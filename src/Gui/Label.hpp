@@ -1,8 +1,13 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #ifndef GUI_LABEL_HPP
 #define GUI_LABEL_HPP
 
 #include "Widget.hpp"
-
+#include "Theme.hpp"
 
 namespace gui
 {
@@ -36,7 +41,7 @@ private:
 
     void updateGeometry();
 
-    sf::Text m_text;
+    sf::Text m_text{gui::Theme::getFont()};
 };
 
 }

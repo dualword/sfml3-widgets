@@ -1,3 +1,8 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #ifndef GUI_ITEMBOX_HPP
 #define GUI_ITEMBOX_HPP
 

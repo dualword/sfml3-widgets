@@ -1,3 +1,8 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #ifndef GUI_BOX_HPP
 #define GUI_BOX_HPP
 
@@ -99,7 +104,7 @@ private:
     State m_state;
 
     // The box is a 9-slices plane, 4 vertices per slice
-    static constexpr size_t VERTEX_COUNT = 9 * 4;
+    static constexpr size_t VERTEX_COUNT = 9 * 6;
     sf::Vertex m_vertices[VERTEX_COUNT];
 };
 

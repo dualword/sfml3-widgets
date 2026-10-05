@@ -1,3 +1,8 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #include "Theme.hpp"
 
 namespace gui
@@ -35,7 +40,7 @@ void OptionsBox<T>::addItem(const sf::String& label, const T& value)
     m_items.push_back(Item(label, value));
 
     m_box.item().setString(label);
-    int width = m_box.item().getLocalBounds().width + Theme::getBoxHeight() * 2 + Theme::PADDING * 2;
+    int width = m_box.item().getLocalBounds().size.x + Theme::getBoxHeight() * 2 + Theme::PADDING * 2;
     // Check if box needs to be resized
     if (width > getSize().x)
     {
@@ -177,14 +182,14 @@ void OptionsBox<T>::onMouseReleased(float x, float y)
 
 
 template <class T>
-void OptionsBox<T>::onKeyPressed(const sf::Event::KeyEvent& key)
+void OptionsBox<T>::onKeyPressed(const sf::Event::KeyPressed& key)
 {
-    if (key.code == sf::Keyboard::Left)
+    if (key.code == sf::Keyboard::Key::Left)
     {
         selectPrevious();
         m_arrowLeft.press();
     }
-    else if (key.code == sf::Keyboard::Right)
+    else if (key.code == sf::Keyboard::Key::Right)
     {
         selectNext();
         m_arrowRight.press();
@@ -193,13 +198,13 @@ void OptionsBox<T>::onKeyPressed(const sf::Event::KeyEvent& key)
 
 
 template <class T>
-void OptionsBox<T>::onKeyReleased(const sf::Event::KeyEvent& key)
+void OptionsBox<T>::onKeyReleased(const sf::Event::KeyPressed& key)
 {
-    if (key.code == sf::Keyboard::Left)
+    if (key.code == sf::Keyboard::Key::Left)
     {
         m_arrowLeft.release();
     }
-    else if (key.code == sf::Keyboard::Right)
+    else if (key.code == sf::Keyboard::Key::Right)
     {
         m_arrowRight.release();
     }

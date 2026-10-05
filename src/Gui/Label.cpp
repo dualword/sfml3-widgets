@@ -1,3 +1,8 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #include "Label.hpp"
 #include "Theme.hpp"
 
@@ -7,7 +12,7 @@ namespace gui
 Label::Label(const sf::String& string)
 {
     m_text.setFont(Theme::getFont());
-    m_text.setPosition(Theme::PADDING, Theme::PADDING);
+    m_text.setPosition({Theme::PADDING, Theme::PADDING});
     m_text.setFillColor(Theme::click.textColor);
     m_text.setCharacterSize(Theme::textSize);
     setSelectable(false);
@@ -63,7 +68,7 @@ void Label::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void Label::updateGeometry()
 {
     Widget::setSize(
-        m_text.getLocalBounds().width + Theme::PADDING * 2, m_text.getLocalBounds().height + Theme::PADDING * 2
+        m_text.getLocalBounds().size.x + Theme::PADDING * 2, m_text.getLocalBounds().size.y + Theme::PADDING * 2
     );
 }
 

@@ -1,3 +1,8 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #ifndef GUI_CHECKBOX_HPP
 #define GUI_CHECKBOX_HPP
 
@@ -25,7 +30,7 @@ protected:
     // Callbacks
     void onStateChanged(State state) override;
     void onMouseReleased(float x, float y) override;
-    void onKeyPressed(const sf::Event::KeyEvent& key) override;
+    void onKeyPressed(const sf::Event::KeyPressed& key) override;
 
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

@@ -1,4 +1,4 @@
-# sfml3-widgets - SFML3 port.
+**sfml3-widgets** - SFML3 port.
 
 - Source code: https://github.com/dualword/sfml3-widgets  
 - License: MIT (See LICENSE file)

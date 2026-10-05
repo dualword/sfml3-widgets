@@ -1,3 +1,8 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #include "Button.hpp"
 #include "Theme.hpp"
 
@@ -19,7 +24,7 @@ void Button::setString(const sf::String& string)
     m_box.item().setString(string);
 
     // Recompute widget width
-    int fittingWidth = m_box.item().getLocalBounds().width + Theme::PADDING * 2 + Theme::borderSize * 2;
+    int fittingWidth = m_box.item().getLocalBounds().size.x + Theme::PADDING * 2 + Theme::borderSize * 2;
     int width = std::max(fittingWidth, Theme::minWidgetWidth);
     m_box.setSize(width, Theme::getBoxHeight());
     m_box.centerTextHorizontally(m_box.item());
@@ -74,9 +79,9 @@ void Button::onMouseReleased(float x, float y)
 }
 
 
-void Button::onKeyPressed(const sf::Event::KeyEvent& key)
+void Button::onKeyPressed(const sf::Event::KeyPressed& key)
 {
-    if (key.code == sf::Keyboard::Return)
+    if (key.code == sf::Keyboard::Key::Enter)
     {
         triggerCallback();
         m_box.press();
@@ -84,9 +89,9 @@ void Button::onKeyPressed(const sf::Event::KeyEvent& key)
 }
 
 
-void Button::onKeyReleased(const sf::Event::KeyEvent& key)
+void Button::onKeyReleased(const sf::Event::KeyPressed& key)
 {
-    if (key.code == sf::Keyboard::Return)
+    if (key.code == sf::Keyboard::Key::Enter)
     {
         m_box.release();
     }

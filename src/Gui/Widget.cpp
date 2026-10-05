@@ -1,3 +1,8 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #include "Widget.hpp"
 #include "Menu.hpp"
 #include "Layouts/Layout.hpp"
@@ -150,8 +155,8 @@ void Widget::setMouseCursor(sf::Cursor::Type cursor)
 void Widget::centerText(sf::Text& text)
 {
     sf::FloatRect r = text.getLocalBounds();
-    text.setOrigin(r.left + std::round(r.width / 2.f), r.top + std::round(r.height / 2.f));
-    text.setPosition(m_size.x / 2, m_size.y / 2);
+    text.setOrigin({r.position.x + std::round(r.size.x / 2.f), r.position.y + std::round(r.size.y / 2.f)});
+    text.setPosition({m_size.x / 2, m_size.y / 2});
 }
 
 // callbacks -------------------------------------------------------------------
@@ -163,8 +168,8 @@ void Widget::onMouseMoved(float, float) { }
 void Widget::onMousePressed(float, float) { }
 void Widget::onMouseReleased(float, float) { }
 void Widget::onMouseWheelMoved(int) { }
-void Widget::onKeyPressed(const sf::Event::KeyEvent&) { }
-void Widget::onKeyReleased(const sf::Event::KeyEvent&) { }
-void Widget::onTextEntered(sf::Uint32) { }
+void Widget::onKeyPressed(const sf::Event::KeyPressed&) { }
+void Widget::onKeyReleased(const sf::Event::KeyPressed&) { }
+void Widget::onTextEntered(char32_t) { }
 
 }

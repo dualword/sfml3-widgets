@@ -1,3 +1,8 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #include "../Theme.hpp"
 
 namespace gui
@@ -5,7 +10,7 @@ namespace gui
 
 template <class T>
 ItemBox<T>::ItemBox(Box::Type type):
-    Box(type)
+    Box(type), m_item(gui::Theme::getFont())
 {
     applyState(StateDefault);
 }
@@ -47,13 +52,13 @@ void ItemBox<T>::draw(sf::RenderTarget& target, sf::RenderStates states) const
 template <class T>
 void ItemBox<T>::onPress()
 {
-    m_item.move(0.f, 1.f);
+    m_item.move(sf::Vector2f(0.f, 1.f));
 }
 
 template <class T>
 void ItemBox<T>::onRelease()
 {
-    m_item.move(0.f, -1.f);
+    m_item.move(sf::Vector2f(0.f, -1.f));
 }
 
 }

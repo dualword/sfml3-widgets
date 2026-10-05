@@ -1,3 +1,8 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #ifndef GUI_LAYOUT_HPP
 #define GUI_LAYOUT_HPP
 
@@ -46,9 +51,9 @@ protected:
     void onMousePressed(float x, float y) override;
     void onMouseReleased(float x, float y) override;
     void onMouseWheelMoved(int delta) override;
-    void onKeyPressed(const sf::Event::KeyEvent& key) override;
-    void onKeyReleased(const sf::Event::KeyEvent& key) override;
-    void onTextEntered(sf::Uint32 unicode) override;
+    void onKeyPressed(const sf::Event::KeyPressed& key) override;
+    void onKeyReleased(const sf::Event::KeyPressed& key) override;
+    void onTextEntered(char32_t unicode) override;
 
     inline Layout* toLayout() override { return this; }
     bool focusNextWidget();

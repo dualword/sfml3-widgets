@@ -1,8 +1,14 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #ifndef GUI_TEXTBOX_HPP
 #define GUI_TEXTBOX_HPP
 
 #include "Widget.hpp"
 #include "Utils/Box.hpp"
+#include "Theme.hpp"
 
 namespace gui
 {
@@ -68,13 +74,13 @@ public:
 
 protected:
     // Callbacks
-    void onKeyPressed(const sf::Event::KeyEvent& key) override;
+    void onKeyPressed(const sf::Event::KeyPressed& key) override;
     void onMouseEnter() override;
     void onMouseLeave() override;
     void onMousePressed(float x, float y) override;
     void onMouseReleased(float x, float y) override;
     void onMouseMoved(float x, float y) override;
-    void onTextEntered(sf::Uint32 unicode) override;
+    void onTextEntered(char32_t unicode) override;
     void onStateChanged(State state) override;
 
 private:
@@ -85,8 +91,8 @@ private:
      */
     void deleteSelectedText();
 
-    sf::Text m_text;
-    sf::Text m_placeholder;
+    sf::Text m_text{gui::Theme::getFont()};
+    sf::Text m_placeholder{gui::Theme::getFont()};
     Box m_box;
     mutable sf::RectangleShape m_cursor;
     mutable sf::Clock m_cursorTimer;

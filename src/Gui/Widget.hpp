@@ -1,9 +1,15 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #ifndef GUI_WIDGET_HPP
 #define GUI_WIDGET_HPP
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <functional>
+#include <cstdint>
 
 namespace gui
 {
@@ -25,6 +31,7 @@ class Widget: public sf::Drawable
 {
 public:
     Widget();
+    virtual ~Widget() = default;
 
     /**
      * Widget's position
@@ -69,9 +76,9 @@ protected:
     virtual void onMousePressed(float x, float y);
     virtual void onMouseReleased(float x, float y);
     virtual void onMouseWheelMoved(int delta);
-    virtual void onKeyPressed(const sf::Event::KeyEvent& key);
-    virtual void onKeyReleased(const sf::Event::KeyEvent& key);
-    virtual void onTextEntered(sf::Uint32 unicode);
+    virtual void onKeyPressed(const sf::Event::KeyPressed& key);
+    virtual void onKeyReleased(const sf::Event::KeyPressed& key);
+    virtual void onTextEntered(char32_t unicode);
 
     void setSize(const sf::Vector2f& size);
     void setSize(float widget, float height);

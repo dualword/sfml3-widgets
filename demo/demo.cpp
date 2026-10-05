@@ -1,7 +1,11 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #include "Gui/Theme.hpp"
 #include "Gui/Gui.hpp"
 #include <SFML/Graphics.hpp>
-
 
 sf::Color hex2color(const std::string& hexcolor)
 {
@@ -40,7 +44,7 @@ int main()
     };
 
     // Create the main window
-    sf::RenderWindow app(sf::VideoMode(800, 600), "SFML Widgets", sf::Style::Close);
+    sf::RenderWindow app(sf::VideoMode({800, 600}), "SFML Widgets", sf::Style::Resize);
     app.setFramerateLimit(60);
 
     gui::Menu menu(app);
@@ -63,16 +67,16 @@ int main()
     gui::HBoxLayout* hbox = menu.addHBoxLayout();
     gui::FormLayout* form = hbox->addFormLayout();
 
-    sf::Text text("Hello world!", gui::Theme::getFont());
-    text.setOrigin(text.getLocalBounds().width / 2, text.getLocalBounds().height / 2);
-    text.setPosition(480, 240);
+    sf::Text text(gui::Theme::getFont(), "Hello world!");
+    text.setOrigin({text.getLocalBounds().size.x / 2, text.getLocalBounds().size.y / 2});
+    text.setPosition({480, 240});
 
     // Textbox
     gui::TextBox* textbox = new gui::TextBox();
     textbox->setText("Hello world!");
     textbox->setCallback([&]() {
         text.setString(textbox->getText());
-        text.setOrigin(text.getLocalBounds().width / 2, text.getLocalBounds().height / 2);
+        text.setOrigin({text.getLocalBounds().size.x / 2, text.getLocalBounds().size.y / 2});
     });
     textbox->setPlaceholder("Type something!");
     form->addRow("Text", textbox);
@@ -90,7 +94,7 @@ int main()
 
     sliderRotation->setStep(1);
     sliderRotation->setCallback([&]() {
-        text.setRotation(sliderRotation->getValue() * 360 / 100.f);
+    text.setRotation(sf::degrees(sliderRotation->getValue() * 360 / 100.f));
         pbarRotation1->setValue(sliderRotation->getValue());
         pbarRotation2->setValue(sliderRotation->getValue());
         pbarRotation3->setValue(sliderRotation->getValue());
@@ -104,7 +108,7 @@ int main()
     gui::ProgressBar* pbarScale3 = new gui::ProgressBar(100, gui::Vertical, gui::LabelOutside);
     sliderScale->setCallback([&]() {
         float scale = 1 + sliderScale->getValue() * 2 / 100.f;
-        text.setScale(scale, scale);
+        text.setScale({scale, scale});
         pbarScale1->setValue(sliderScale->getValue());
         pbarScale2->setValue(sliderScale->getValue());
         pbarScale3->setValue(sliderScale->getValue());
@@ -145,6 +149,22 @@ int main()
         text.setStyle(style);
     });
     form->addRow("Underlined text", checkboxUnderlined);
+
+    auto* toggle1 = new gui::ToggleSwitch();
+    toggle1->setCallback([&](){
+        if (toggle1->isChecked()){
+            std::cout << "toggle1 ON" << std::endl;
+        }else{
+            std::cout << "toggle1 OFF" << std::endl;
+        }
+    });
+    form->addRow("ToggleSwitch", toggle1);
+
+    auto* toggle2 = new gui::LabeledToggle("Enable V-Sync");
+    toggle2->setCallback([&](){
+        std::cout << "VSync: " << (toggle2->isChecked() ? "ON" : "OFF") << std::endl;
+    });
+    form->addRow("LabeledToggle", toggle2);
 
     // Progress bar
     form->addRow("Progress bar (label = None)", pbarRotation1);
@@ -211,20 +231,21 @@ int main()
     texture.loadFromFile("demo/sfml.png");
 
     sf::Sprite sprite(texture);
-    sprite.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
-    sprite.setPosition(300, 360);
+    sprite.setOrigin({static_cast<float>(texture.getSize().x / 2), static_cast<float>(texture.getSize().y / 2)});
+    sprite.setPosition({300, 360});
 
     // Start the application loop
     while (app.isOpen())
     {
         // Process events
-        sf::Event event;
-        while (app.pollEvent(event))
+        while (const std::optional event = app.pollEvent())
         {
-            // Send events to menu
-            menu.onEvent(event);
-            if (event.type == sf::Event::Closed)
+            if (event->is<sf::Event::Closed>())
+            {
                 app.close();
+            }
+            // Send events to menu
+            menu.onEvent(*event);
         }
 
         // Clear screen

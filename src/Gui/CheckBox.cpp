@@ -1,11 +1,15 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #include "CheckBox.hpp"
 #include "Theme.hpp"
 
 namespace gui
 {
 
-CheckBox::CheckBox(bool checked):
-    m_box(Box::Input)
+CheckBox::CheckBox(bool checked): m_box(Box::Input)
 {
     int offset = Theme::PADDING + Theme::borderSize;
     float box_size = m_cross.getSize().x + offset * 2;
@@ -47,7 +51,7 @@ void CheckBox::onStateChanged(State state)
 
 void CheckBox::onMouseReleased(float x, float y)
 {
-    if (containsPoint(sf::Vector2f(x, y)))
+    if (containsPoint({x, y}))
     {
         check(!m_checked);
         triggerCallback();
@@ -55,9 +59,9 @@ void CheckBox::onMouseReleased(float x, float y)
 }
 
 
-void CheckBox::onKeyPressed(const sf::Event::KeyEvent& key)
+void CheckBox::onKeyPressed(const sf::Event::KeyPressed& key)
 {
-    if (key.code == sf::Keyboard::Space)
+    if (key.code == sf::Keyboard::Key::Space)
     {
         check(!m_checked);
         triggerCallback();

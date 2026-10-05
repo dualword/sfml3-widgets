@@ -1,3 +1,8 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #ifndef GUI_SLIDER_HPP
 #define GUI_SLIDER_HPP
 
@@ -31,7 +36,7 @@ public:
 
 protected:
     // Callbacks
-    void onKeyPressed(const sf::Event::KeyEvent& key) override;
+    void onKeyPressed(const sf::Event::KeyPressed& key) override;
     void onMousePressed(float x, float y) override;
     void onMouseMoved(float x, float y) override;
     void onMouseReleased(float x, float y) override;
@@ -47,7 +52,7 @@ private:
     int m_step;
     int m_value;
     Box m_box;
-    sf::Vertex m_progression[4];
+    sf::Vertex m_progression[6];
     Box m_handle;
 };
 

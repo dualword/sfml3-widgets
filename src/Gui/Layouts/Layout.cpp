@@ -1,3 +1,8 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #include "Layout.hpp"
 #include "FormLayout.hpp"
 #include "HBoxLayout.hpp"
@@ -115,7 +120,7 @@ void Layout::onMouseMoved(float x, float y)
 {
     // Pressed widgets still receive mouse move events even when not hovered if mouse is pressed
     // Example: moving a slider's handle
-    if (m_focus != nullptr && sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    if (m_focus != nullptr && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
     {
         m_focus->onMouseMoved(x - m_focus->getPosition().x, y - m_focus->getPosition().y);
         if (!m_focus->containsPoint({x, y}))
@@ -212,7 +217,7 @@ void Layout::onMouseWheelMoved(int delta)
 }
 
 
-void Layout::onKeyPressed(const sf::Event::KeyEvent& key)
+void Layout::onKeyPressed(const sf::Event::KeyPressed& key)
 {
     if (key.code == Theme::nextWidgetKey)
     {
@@ -232,7 +237,7 @@ void Layout::onKeyPressed(const sf::Event::KeyEvent& key)
 }
 
 
-void Layout::onKeyReleased(const sf::Event::KeyEvent& key)
+void Layout::onKeyReleased(const sf::Event::KeyPressed& key)
 {
     if (m_focus != nullptr)
     {
@@ -241,7 +246,7 @@ void Layout::onKeyReleased(const sf::Event::KeyEvent& key)
 }
 
 
-void Layout::onTextEntered(sf::Uint32 unicode)
+void Layout::onTextEntered(char32_t unicode)
 {
     if (m_focus != nullptr)
     {

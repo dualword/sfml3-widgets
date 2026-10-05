@@ -1,3 +1,8 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #include "TextBox.hpp"
 #include "Theme.hpp"
 
@@ -19,17 +24,17 @@ TextBox::TextBox(float width):
 
     int offset = Theme::borderSize + Theme::PADDING;
     m_text.setFont(Theme::getFont());
-    m_text.setPosition(offset, offset);
+    m_text.setPosition({static_cast<float>(offset), static_cast<float>(offset)});
     m_text.setFillColor(Theme::input.textColor);
     m_text.setCharacterSize(Theme::textSize);
 
     m_placeholder.setFont(Theme::getFont());
-    m_placeholder.setPosition(offset, offset);
+    m_placeholder.setPosition({static_cast<float>(offset), static_cast<float>(offset)});
     m_placeholder.setFillColor(Theme::input.textPlaceholderColor);
     m_placeholder.setCharacterSize(Theme::textSize);
 
     // Build cursor
-    m_cursor.setPosition(offset, offset);
+    m_cursor.setPosition({static_cast<float>(offset), static_cast<float>(offset)});
     m_cursor.setSize(sf::Vector2f(1.f, Theme::getLineSpacing()));
     m_cursor.setFillColor(Theme::input.textColor);
     setCursor(0);
@@ -52,12 +57,10 @@ void TextBox::setText(const sf::String& string)
     setCursor(getText().getSize());
 }
 
-
 const sf::String& TextBox::getText() const
 {
     return m_text.getString();
 }
-
 
 void TextBox::setMaxLength(size_t maxLength)
 {
@@ -70,7 +73,6 @@ void TextBox::setMaxLength(size_t maxLength)
     }
 }
 
-
 void TextBox::setCursor(size_t index)
 {
     if (index <= m_text.getString().getSize())
@@ -80,53 +82,51 @@ void TextBox::setCursor(size_t index)
         m_selectionLast = index;
 
         float padding = Theme::borderSize + Theme::PADDING;
-        m_cursor.setPosition(m_text.findCharacterPos(index).x, padding);
+        m_cursor.setPosition({m_text.findCharacterPos(index).x, padding});
         m_cursorTimer.restart();
 
         if (m_cursor.getPosition().x > getSize().x - padding)
         {
             // Shift text on left
             float diff = m_cursor.getPosition().x - getSize().x + padding;
-            m_text.move(-diff, 0);
-            m_cursor.move(-diff, 0);
+            m_text.move({-diff, 0});
+            m_cursor.move({-diff, 0});
         }
         else if (m_cursor.getPosition().x < padding)
         {
             // Shift text on right
             float diff = padding - m_cursor.getPosition().x;
-            m_text.move(diff, 0);
-            m_cursor.move(diff, 0);
+            m_text.move({diff, 0});
+            m_cursor.move({diff, 0});
         }
 
-        float textWidth = m_text.getLocalBounds().width;
+        float textWidth = m_text.getLocalBounds().size.x;
         if (m_text.getPosition().x < padding && m_text.getPosition().x + textWidth < getSize().x - padding)
         {
             float diff = (getSize().x - padding) - (m_text.getPosition().x + textWidth);
-            m_text.move(diff, 0);
-            m_cursor.move(diff, 0);
+            m_text.move({diff, 0});
+            m_cursor.move({diff, 0});
             // If text is smaller than the textbox, force align on left
             if (textWidth < (getSize().x - padding * 2))
             {
                 diff = padding - m_text.getPosition().x;
-                m_text.move(diff, 0);
-                m_cursor.move(diff, 0);
+                m_text.move({diff, 0});
+                m_cursor.move({diff, 0});
             }
         }
     }
 }
-
 
 size_t TextBox::getCursor() const
 {
     return m_cursorPos;
 }
 
-
-void TextBox::onKeyPressed(const sf::Event::KeyEvent& key)
+void TextBox::onKeyPressed(const sf::Event::KeyPressed& key)
 {
     switch (key.code)
     {
-    case sf::Keyboard::Left:
+    case sf::Keyboard::Key::Left:
         if (key.shift)
         {
             if (m_cursorPos == m_selectionLast)
@@ -154,7 +154,7 @@ void TextBox::onKeyPressed(const sf::Event::KeyEvent& key)
         }
         break;
 
-    case sf::Keyboard::Right:
+    case sf::Keyboard::Key::Right:
         if (key.shift)
         {
             if (m_cursorPos == m_selectionFirst)
@@ -182,7 +182,7 @@ void TextBox::onKeyPressed(const sf::Event::KeyEvent& key)
         }
         break;
 
-    case sf::Keyboard::BackSpace:
+    case sf::Keyboard::Key::Backspace:
         if (!m_selectedText.isEmpty())
         {
             deleteSelectedText();
@@ -199,7 +199,7 @@ void TextBox::onKeyPressed(const sf::Event::KeyEvent& key)
         }
         break;
 
-    case sf::Keyboard::Delete:
+    case sf::Keyboard::Key::Delete:
         if (!m_selectedText.isEmpty())
         {
             deleteSelectedText();
@@ -216,7 +216,7 @@ void TextBox::onKeyPressed(const sf::Event::KeyEvent& key)
         }
         break;
 
-    case sf::Keyboard::Home:
+    case sf::Keyboard::Key::Home:
         if (key.shift)
         {
             // Shift+Home: select from start to cursor
@@ -228,7 +228,7 @@ void TextBox::onKeyPressed(const sf::Event::KeyEvent& key)
         }
         break;
 
-    case sf::Keyboard::End:
+    case sf::Keyboard::Key::End:
         if (key.shift)
         {
             // Shift+End: select from cursor to end
@@ -240,12 +240,12 @@ void TextBox::onKeyPressed(const sf::Event::KeyEvent& key)
         }
         break;
 
-    case sf::Keyboard::Return:
+    case sf::Keyboard::Key::Enter:
         triggerCallback();
         break;
 
     // Ctrl+A: select all
-    case sf::Keyboard::A:
+    case sf::Keyboard::Key::A:
         if (key.control)
         {
             setSelectedText(0, m_text.getString().getSize());
@@ -253,7 +253,7 @@ void TextBox::onKeyPressed(const sf::Event::KeyEvent& key)
         break;
 
     // Ctrl+V: paste clipboard
-    case sf::Keyboard::V:
+    case sf::Keyboard::Key::V:
         if (key.control)
         {
             // Delete selected text and write clipboard string over it.
@@ -273,7 +273,7 @@ void TextBox::onKeyPressed(const sf::Event::KeyEvent& key)
         break;
 
     // Ctrl+C: copy selected text to clipboard
-    case sf::Keyboard::C:
+    case sf::Keyboard::Key::C:
         if (key.control)
         {
             if (!m_selectedText.isEmpty())
@@ -284,7 +284,7 @@ void TextBox::onKeyPressed(const sf::Event::KeyEvent& key)
         break;
 
     // Ctrl+X: cut selected text to clipboard
-    case sf::Keyboard::X:
+    case sf::Keyboard::Key::X:
         if (key.control)
         {
             if (!m_selectedText.isEmpty())
@@ -300,18 +300,15 @@ void TextBox::onKeyPressed(const sf::Event::KeyEvent& key)
     }
 }
 
-
 void TextBox::onMouseEnter()
 {
-    setMouseCursor(sf::Cursor::Text);
+    setMouseCursor(sf::Cursor::Type::Text);
 }
-
 
 void TextBox::onMouseLeave()
 {
-    setMouseCursor(sf::Cursor::Arrow);
+    setMouseCursor(sf::Cursor::Type::Arrow);
 }
-
 
 void TextBox::onMousePressed(float x, float)
 {
@@ -327,7 +324,6 @@ void TextBox::onMousePressed(float x, float)
     }
 }
 
-
 void TextBox::onMouseReleased(float x, float)
 {
     for (int i = m_text.getString().getSize(); i >= 0; --i)
@@ -342,10 +338,9 @@ void TextBox::onMouseReleased(float x, float)
     }
 }
 
-
 void TextBox::onMouseMoved(float x, float)
 {
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
     {
         for (int i = m_text.getString().getSize(); i >= 0; --i)
         {
@@ -360,8 +355,7 @@ void TextBox::onMouseMoved(float x, float)
     }
 }
 
-
-void TextBox::onTextEntered(sf::Uint32 unicode)
+void TextBox::onTextEntered(char32_t unicode)
 {
     if (unicode > 30 && (unicode < 127 || unicode > 159))
     {
@@ -378,7 +372,6 @@ void TextBox::onTextEntered(sf::Uint32 unicode)
     }
 }
 
-
 void TextBox::onStateChanged(State state)
 {
     m_box.applyState(state);
@@ -390,7 +383,6 @@ void TextBox::onStateChanged(State state)
     }
 }
 
-
 void TextBox::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
@@ -399,8 +391,19 @@ void TextBox::draw(sf::RenderTarget& target, sf::RenderStates states) const
     // Crop the text with GL Scissor
     glEnable(GL_SCISSOR_TEST);
 
-    sf::Vector2f pos = getAbsolutePosition();
-    glScissor(pos.x + Theme::borderSize, target.getSize().y - (pos.y + getSize().y), getSize().x, getSize().y);
+    sf::Vector2f topLeftWorld = getAbsolutePosition();
+    sf::Vector2f bottomRightWorld = topLeftWorld + getSize();
+
+    sf::Vector2i topLeftPixel = target.mapCoordsToPixel(topLeftWorld);
+    sf::Vector2i bottomRightPixel = target.mapCoordsToPixel(bottomRightWorld);
+
+    int scissorWidth = bottomRightPixel.x - topLeftPixel.x;
+    int scissorHeight = bottomRightPixel.y - topLeftPixel.y;
+    int viewportHeight = target.getSize().y;
+    int scissorX = topLeftPixel.x;
+    int scissorY = viewportHeight - bottomRightPixel.y;
+
+    glScissor(scissorX, scissorY, scissorWidth, scissorHeight);
 
     if (m_text.getString().isEmpty())
     {
@@ -421,9 +424,6 @@ void TextBox::draw(sf::RenderTarget& target, sf::RenderStates states) const
         target.draw(m_text, states);
     }
 
-    glDisable(GL_SCISSOR_TEST);
-
-    // Show cursor if focused and no selection
     if (isFocused() && m_selectedText.isEmpty())
     {
         // Make it blink
@@ -438,8 +438,9 @@ void TextBox::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
         target.draw(m_cursor, states);
     }
-}
 
+    glDisable(GL_SCISSOR_TEST);
+}
 
 void TextBox::setSelectedText(size_t from, size_t to)
 {
@@ -460,19 +461,16 @@ void TextBox::setSelectedText(size_t from, size_t to)
     }
 }
 
-
 void TextBox::clearSelectedText()
 {
     m_selectionFirst = m_selectionLast = m_cursorPos;
     m_selectedText.clear();
 }
 
-
 const sf::String& TextBox::getSelectedText() const
 {
     return m_selectedText;
 }
-
 
 void TextBox::deleteSelectedText()
 {
@@ -487,12 +485,10 @@ void TextBox::deleteSelectedText()
     }
 }
 
-
 void TextBox::setPlaceholder(const sf::String& placeholder)
 {
     m_placeholder.setString(placeholder);
 }
-
 
 const sf::String& TextBox::getPlaceholder() const
 {

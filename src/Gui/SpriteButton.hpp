@@ -1,7 +1,13 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #ifndef GUI_SPRITEBUTTON_HPP
 #define GUI_SPRITEBUTTON_HPP
 
 #include "Widget.hpp"
+#include "Theme.hpp"
 
 namespace gui
 {
@@ -28,15 +34,15 @@ public:
     void onMouseMoved(float x, float y) override;
     void onMousePressed(float x, float y) override;
     void onMouseReleased(float x, float y) override;
-    void onKeyPressed(const sf::Event::KeyEvent& key) override;
-    void onKeyReleased(const sf::Event::KeyEvent& key) override;
+    void onKeyPressed(const sf::Event::KeyPressed& key) override;
+    void onKeyReleased(const sf::Event::KeyPressed& key) override;
 
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     void press();
     void release();
 
-    sf::Text m_text;
+    sf::Text m_text{gui::Theme::getFont()};
     sf::Sprite m_background;
     bool m_pressed;
 };

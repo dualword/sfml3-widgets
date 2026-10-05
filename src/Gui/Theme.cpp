@@ -1,12 +1,17 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #include "Theme.hpp"
+#include <optional>
 
 namespace gui
 {
 
 static sf::Cursor& getDefaultCursor()
 {
-    static sf::Cursor cursor;
-    cursor.loadFromSystem(sf::Cursor::Arrow);
+    static sf::Cursor cursor = sf::Cursor::createFromSystem(sf::Cursor::Type::Arrow).value();
     return cursor;
 }
 
@@ -19,8 +24,8 @@ int Theme::minWidgetWidth = 86;
 float Theme::PADDING = 1.f;
 float Theme::MARGIN = 7.f;
 
-sf::Keyboard::Key Theme::nextWidgetKey = sf::Keyboard::Down;
-sf::Keyboard::Key Theme::previousWidgetKey = sf::Keyboard::Up;
+sf::Keyboard::Key Theme::nextWidgetKey = sf::Keyboard::Key::Down;
+sf::Keyboard::Key Theme::previousWidgetKey = sf::Keyboard::Key::Up;
 
 sf::Font Theme::m_font;
 sf::Texture Theme::m_texture;
@@ -30,7 +35,7 @@ sf::Cursor& Theme::cursor = getDefaultCursor();
 
 bool Theme::loadFont(const std::string& filename)
 {
-    return m_font.loadFromFile(filename);
+    return m_font.openFromFile(filename);
 }
 
 
@@ -39,16 +44,16 @@ bool Theme::loadTexture(const std::string& filename)
     if (m_texture.loadFromFile(filename))
     {
         sf::IntRect subrect;
-        subrect.width = m_texture.getSize().x;
-        subrect.height = m_texture.getSize().y / _TEXTURE_ID_COUNT;
+        subrect.size.x = m_texture.getSize().x;
+        subrect.size.y = m_texture.getSize().y / _TEXTURE_ID_COUNT;
 
         for (int i = 0; i < _TEXTURE_ID_COUNT; ++i)
         {
             m_subrects[i] = subrect;
-            subrect.top += subrect.height;
+            subrect.position.y += subrect.size.y;
         }
 
-        borderSize = subrect.width / 3;
+        borderSize = subrect.size.x / 3;
         return true;
     }
     return false;

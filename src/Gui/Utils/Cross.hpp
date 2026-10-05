@@ -1,3 +1,8 @@
+/*
+ * This file is part of sfml3-widgets (https://github.com/dualword/sfml3-widgets)
+ * License: MIT
+ */
+
 #ifndef GUI_CROSS_HPP
 #define GUI_CROSS_HPP
 
@@ -23,7 +28,7 @@ private:
 
     void updateGeometry(float x, float y);
 
-    sf::Vertex m_vertices[4];
+    sf::Vertex m_vertices[6];
 };
 
 }
