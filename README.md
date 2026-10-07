@@ -3,6 +3,9 @@
 - Source code: https://github.com/dualword/sfml3-widgets  
 - License: MIT (See LICENSE file)
 
+Assets:  
+- [Noto font](https://fonts.google.com/noto/use) (Open Font License)
+
 <p align="middle">
     <img src="screenshot.png" width="555"/>
 </p>

@@ -50,7 +50,7 @@ int main()
     gui::Menu menu(app);
     menu.setPosition(10, 10);
 
-    gui::Theme::loadFont("demo/tahoma.ttf");
+    gui::Theme::loadFont("demo/NotoSansCJKsc-Regular.otf");
     gui::Theme::loadTexture(defaultTheme.texturePath);
     gui::Theme::textSize = 11;
     gui::Theme::click.textColor      = hex2color("#191B18");
@@ -73,7 +73,7 @@ int main()
 
     // Textbox
     gui::TextBox* textbox = new gui::TextBox();
-    textbox->setText("Hello world!");
+    textbox->setText(L"Hello! 你好! Привет! Ça va?");
     textbox->setCallback([&]() {
         text.setString(textbox->getText());
         text.setOrigin({text.getLocalBounds().size.x / 2, text.getLocalBounds().size.y / 2});
