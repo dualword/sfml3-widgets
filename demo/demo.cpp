@@ -5,6 +5,8 @@
 
 #include "Gui/Theme.hpp"
 #include "Gui/Gui.hpp"
+#include "Gui/CheckBoxVGroup.hpp"
+#include "Gui/CheckBoxGroup.hpp"
 #include <SFML/Graphics.hpp>
 
 sf::Color hex2color(const std::string& hexcolor)
@@ -69,7 +71,7 @@ int main()
 
     sf::Text text(gui::Theme::getFont(), "Hello world!");
     text.setOrigin({text.getLocalBounds().size.x / 2, text.getLocalBounds().size.y / 2});
-    text.setPosition({480, 240});
+    text.setPosition({500, 350});
 
     // Textbox
     gui::TextBox* textbox = new gui::TextBox();
@@ -127,7 +129,7 @@ int main()
     });
     form->addRow("Color", opt);
 
-    // Checbkox
+    // Checkbox
     gui::CheckBox* checkboxBold = new gui::CheckBox();
     checkboxBold->setCallback([&]() {
         int style = text.getStyle();
@@ -150,6 +152,7 @@ int main()
     });
     form->addRow("Underlined text", checkboxUnderlined);
 
+    //ToggleSwitch
     auto* toggle1 = new gui::ToggleSwitch();
     toggle1->setCallback([&](){
         if (toggle1->isChecked()){
@@ -159,7 +162,6 @@ int main()
         }
     });
     form->addRow("ToggleSwitch", toggle1);
-
     auto* toggle2 = new gui::LabeledToggle("Enable V-Sync");
     toggle2->setCallback([&](){
         std::cout << "VSync: " << (toggle2->isChecked() ? "ON" : "OFF") << std::endl;
@@ -216,6 +218,45 @@ int main()
     hbox3->addLabel("Small progress bar");
     gui::ProgressBar* pbar = new gui::ProgressBar(40);
     hbox3->add(pbar);
+
+    //CheckBoxGroup
+    gui::Label* lblEasy = new gui::Label("Easy");
+    gui::CheckBox* optEasy = new gui::CheckBox();
+    gui::Label* lblMedium = new gui::Label("Medium");
+    gui::CheckBox* optMedium = new gui::CheckBox();
+    gui::Label* lblHard = new gui::Label("Hard");
+    gui::CheckBox* optHard = new gui::CheckBox();
+    CheckBoxGroup difficultyGroup;
+    difficultyGroup.addButton(optEasy);
+    difficultyGroup.addButton(optMedium);
+    difficultyGroup.addButton(optHard);
+    difficultyGroup.select(0);
+    difficultyGroup.setOnChanged([](gui::CheckBox* selected, int index) {
+        std::cout << "Selected index: " << index;
+        if (index == 0) { std::cout << " easy " << std::endl; }
+        if (index == 1) { std::cout << " medium " << std::endl; }
+        if (index == 2) { std::cout << " hard " << std::endl; }
+    });
+    gui::HBoxLayout* layout = new gui::HBoxLayout();
+    layout->add(lblEasy);
+    layout->add(optEasy);
+    layout->add(lblMedium);
+    layout->add(optMedium);
+    layout->add(lblHard);
+    layout->add(optHard);
+    vbox->add(layout);
+
+    //CheckBoxVGroup
+    CheckBoxVGroup* checkboxGroup = new CheckBoxVGroup();
+    checkboxGroup->setHeader("Select Option:");
+    checkboxGroup->addOption("Option 1");
+    checkboxGroup->addOption("Option 2");
+    checkboxGroup->addOption("Option 3");
+    checkboxGroup->setOnChanged([](int index) {
+        std::cout << "Selected index: " << index << std::endl;
+    });
+    checkboxGroup->setBorder(true, sf::Color::Blue, 1.f, 10.f);
+    vbox->add(checkboxGroup);
 
     gui::Slider* vslider = new gui::Slider(100, gui::Vertical);
     vslider->setCallback([&]() {

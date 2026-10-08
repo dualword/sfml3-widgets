@@ -12,7 +12,6 @@ file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
     "src/*.h"
 )
 add_library(sfml3-widgets STATIC ${SRC_FILES})
-
 target_include_directories(sfml3-widgets PUBLIC src)
 target_link_libraries(sfml3-widgets PUBLIC GL SFML::Graphics SFML::Window SFML::System)
 
