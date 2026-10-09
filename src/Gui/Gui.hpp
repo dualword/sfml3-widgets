@@ -30,5 +30,7 @@
 #include "Layouts/FormLayout.hpp"
 #include "Layouts/HBoxLayout.hpp"
 #include "Layouts/VBoxLayout.hpp"
+#include "Gui/CheckBoxVGroup.hpp"
+#include "Gui/CheckBoxGroup.hpp"
 
 #endif // GUI_GUI_HPP

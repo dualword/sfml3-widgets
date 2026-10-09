@@ -5,8 +5,6 @@
 
 #include "Gui/Theme.hpp"
 #include "Gui/Gui.hpp"
-#include "Gui/CheckBoxVGroup.hpp"
-#include "Gui/CheckBoxGroup.hpp"
 #include <SFML/Graphics.hpp>
 
 sf::Color hex2color(const std::string& hexcolor)
