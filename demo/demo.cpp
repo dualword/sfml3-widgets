@@ -33,6 +33,9 @@ struct Theme
 
 int main()
 {
+    sf::ContextSettings settings;
+    settings.antiAliasingLevel = 8;
+
     Theme defaultTheme = {
         hex2color("#dddbde"),
         "demo/texture-default.png"
@@ -44,7 +47,7 @@ int main()
     };
 
     // Create the main window
-    sf::RenderWindow app(sf::VideoMode({800, 600}), "SFML Widgets", sf::Style::Resize);
+    sf::RenderWindow app(sf::VideoMode({800, 600}), "SFML Widgets", sf::Style::Resize, sf::State::Windowed, settings);
     app.setFramerateLimit(60);
 
     gui::Menu menu(app);
@@ -217,6 +220,33 @@ int main()
     gui::ProgressBar* pbar = new gui::ProgressBar(40);
     hbox3->add(pbar);
 
+    //RadioButtonGroup
+    gui::Label* lblE = new gui::Label("Easy");
+    gui::RadioButton* rad1 = new gui::RadioButton("", true);
+    gui::Label* lblM = new gui::Label("Medium");
+    gui::RadioButton* rad2 = new gui::RadioButton("", true);
+    gui::Label* lblH = new gui::Label("Hard");
+    gui::RadioButton* rad3 = new gui::RadioButton("", true);
+    gui::RadioButtonGroup* settingsGroup = new gui::RadioButtonGroup();
+    settingsGroup->addButton(rad1, 0);
+    settingsGroup->addButton(rad2, 1);
+    settingsGroup->addButton(rad3, 2);
+    settingsGroup->selectButton(1);
+    settingsGroup->setCallback([&](int index) {
+        std::cout << "Selected index: " << index;
+        if (index == 0) { std::cout << " easy " << std::endl; }
+        if (index == 1) { std::cout << " medium " << std::endl; }
+        if (index == 2) { std::cout << " hard " << std::endl; }
+    });
+    gui::HBoxLayout* layoutRad = new gui::HBoxLayout();
+    layoutRad->add(lblE);
+    layoutRad->add(rad1);
+    layoutRad->add(lblM);
+    layoutRad->add(rad2);
+    layoutRad->add(lblH);
+    layoutRad->add(rad3);
+    vbox->add(layoutRad);
+
     //CheckBoxGroup
     gui::Label* lblEasy = new gui::Label("Easy");
     gui::CheckBox* optEasy = new gui::CheckBox();
@@ -229,7 +259,7 @@ int main()
     difficultyGroup.addButton(optMedium);
     difficultyGroup.addButton(optHard);
     difficultyGroup.select(0);
-    difficultyGroup.setOnChanged([](gui::CheckBox* selected, int index) {
+    difficultyGroup.setCallback([](gui::CheckBox* selected, int index) {
         std::cout << "Selected index: " << index;
         if (index == 0) { std::cout << " easy " << std::endl; }
         if (index == 1) { std::cout << " medium " << std::endl; }
@@ -250,7 +280,7 @@ int main()
     checkboxGroup->addOption("Option 1");
     checkboxGroup->addOption("Option 2");
     checkboxGroup->addOption("Option 3");
-    checkboxGroup->setOnChanged([](int index) {
+    checkboxGroup->setCallback([](int index) {
         std::cout << "Selected index: " << index << std::endl;
     });
     checkboxGroup->setBorder(true, sf::Color::Blue, 1.f, 10.f);

@@ -25,6 +25,7 @@
 #include "TextBox.hpp"
 #include "ToggleSwitch.hpp"
 #include "LabeledToggle.hpp"
+#include "RadioButton.hpp"
 
 // Layouts
 #include "Layouts/FormLayout.hpp"
@@ -32,5 +33,6 @@
 #include "Layouts/VBoxLayout.hpp"
 #include "Gui/CheckBoxVGroup.hpp"
 #include "Gui/CheckBoxGroup.hpp"
+#include "Gui/RadioButtonGroup.hpp"
 
 #endif // GUI_GUI_HPP

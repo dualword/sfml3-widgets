@@ -67,7 +67,7 @@ public:
         return -1;
     }
 
-    void setOnChanged(std::function<void(gui::CheckBox* selected, int index)> callback) {
+    void setCallback(std::function<void(gui::CheckBox* selected, int index)> callback) {
         m_onChangedCallback = callback;
     }
 };

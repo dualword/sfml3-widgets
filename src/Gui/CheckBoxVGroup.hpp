@@ -93,7 +93,7 @@ public:
         return -1;
     }
 
-    void setOnChanged(std::function<void(int index)> callback) {
+    void setCallback(std::function<void(int index)> callback) {
         m_onChangedCallback = callback;
     }
 
